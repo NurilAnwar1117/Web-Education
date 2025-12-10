@@ -2,16 +2,17 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+
+// Dashboard (hanya bisa diakses setelah login)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Arahkan root "/" langsung ke halaman login
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-// Dashboard (hanya bisa diakses setelah login)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Routes untuk profile
 Route::middleware('auth')->group(function () {
@@ -21,3 +22,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
