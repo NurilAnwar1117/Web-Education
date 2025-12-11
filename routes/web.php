@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentDataController;
 use Illuminate\Support\Facades\Route;
@@ -17,15 +18,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    // ✅ Halaman Data Mahasiswa (frontend + dummy JS)
     Route::get('/data-mahasiswa', [StudentDataController::class, 'index']
     )->name('data-mahasiswa');
 
-    // ✅ Halaman Aktivitas Mahasiswa (frontend + dummy JS)
-    Route::get('/aktivitas', function () {
-        // sama seperti di atas, dummy di-handle di file Blade
-        return view('aktivitas');
-    })->name('aktivitas');
+    Route::get('/aktivitas', [ActivityLogController::class, 'index']
+    )->name('aktivitas');
 });
 
 // Routes untuk profile
