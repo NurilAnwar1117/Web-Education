@@ -75,8 +75,19 @@
                                 </td>
 
                                 {{-- Aksi --}}
-                                <td class="px-3 py-2 text-[11px] text-gray-400">
-                                    Detail / Edit / Hapus
+                                <td class="px-3 py-2 text-[11px] text-gray-400 space-x-1">
+                                    <form action="{{ route('aktivitas.destroy', $log->log_id) }}"
+                                        method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus catatan aktivitas ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="px-2 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -96,58 +107,4 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-<script>
-    // === DUMMY DATA ACTIVITY LOGS ===
-    const dummyLogs = [
-        {
-            log_id: 1,
-            student_id: 101,
-            facility_id: 1,
-            activity_type: "masuk",
-            timestamp_in: "2025-02-28 08:00:00",
-            timestamp_out: "2025-02-28 09:30:00",
-            duration: 90
-        },
-        {
-            log_id: 2,
-            student_id: 102,
-            facility_id: 2,
-            activity_type: "menggunakan",
-            timestamp_in: "2025-02-28 10:00:00",
-            timestamp_out: null,
-            duration: null
-        },
-        {
-            log_id: 3,
-            student_id: 103,
-            facility_id: 1,
-            activity_type: "keluar",
-            timestamp_in: "2025-02-27 14:00:00",
-            timestamp_out: "2025-02-27 16:45:00",
-            duration: 165
-        }
-    ];
 
-    // === MASUKKAN DATA KE TABEL SECARA DINAMIS ===
-    const tbody = document.querySelector("#activity-body");
-
-    dummyLogs.forEach((log, index) => {
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-gray-50";
-
-        tr.innerHTML = `
-            <td class="px-3 py-2">${index + 1}</td>
-            <td class="px-3 py-2">${log.student_id}</td>
-            <td class="px-3 py-2">${log.facility_id}</td>
-            <td class="px-3 py-2 capitalize">${log.activity_type}</td>
-            <td class="px-3 py-2">${log.timestamp_in ?? "-"}</td>
-            <td class="px-3 py-2">${log.timestamp_out ?? "-"}</td>
-            <td class="px-3 py-2">${log.duration ?? "-"}</td>
-            <td class="px-3 py-2 text-[11px] text-gray-400">Detail / Edit / Hapus</td>
-        `;
-
-        tbody.appendChild(tr);
-    });
-</script>
-@endsection

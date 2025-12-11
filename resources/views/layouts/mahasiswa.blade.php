@@ -31,31 +31,10 @@
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white">Portal Mahasiswa</h1>
                 <p class="text-[11px] md:text-xs text-blue-100">
-                    Akses ruangan & peminjaman fasilitas kampus
+                    peminjaman fasilitas kampus
                 </p>
             </div>
         </div>
-
-        {{-- NAVIGASI MAHASISWA (LINK MASIH GENERIC, ROUTE NANTI) --}}
-        <nav class="hidden md:flex items-center gap-3 text-xs">
-            <a href="{{ route('m.home') }}"
-            class="px-3 py-1.5 rounded-full text-[11px]
-                    {{ Route::is('m.home') ? 'bg-white text-blue-600' : 'bg-white/10 text-white hover:bg-white/20' }}">
-                Beranda
-            </a>
-
-            <a href="{{ route('m.akses-ruangan') }}"
-            class="px-3 py-1.5 rounded-full text-[11px]
-                    {{ Route::is('m.akses-ruangan') ? 'bg-white text-blue-600' : 'bg-white/10 text-white hover:bg-white/20' }}">
-                Akses Ruangan
-            </a>
-
-            <a href="{{ route('m.peminjaman-fasilitas') }}"
-            class="px-3 py-1.5 rounded-full text-[11px]
-                    {{ Route::is('m.peminjaman-fasilitas') ? 'bg-white text-blue-600' : 'bg-white/10 text-white hover:bg-white/20' }}">
-                Peminjaman Fasilitas
-            </a>
-        </nav>
     </header>
 
     {{-- KONTEN UTAMA MAHASISWA --}}

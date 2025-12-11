@@ -3,32 +3,36 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacilityLoanController;
 
 // Arahkan root "/" langsung ke halaman login
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Semua halaman utama yang butuh login & verifikasi
 Route::middleware(['auth', 'verified'])->group(function () {
+    // ADMIN
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/data-mahasiswa', [DashboardController::class, 'mahasiswa'])->name('data-mahasiswa');
+    Route::delete('/data-mahasiswa/{student}', [DashboardController::class, 'destroyStudent'])->name('data-mahasiswa.destroy');
+    Route::get('/aktivitas', [DashboardController::class, 'aktivitas'])->name('aktivitas');
+    Route::delete('/aktivitas/{log}', [DashboardController::class, 'destroyActivity'])->name('aktivitas.destroy');
+    Route::get('/peminjaman-fasilitas', [FacilityLoanController::class, 'index'])->name('peminjaman.index');
 
-    // Dashboard (home)
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
-
-    // ✅ Halaman Data Mahasiswa (frontend + dummy JS)
-    Route::get('/data-mahasiswa', function () {
-        // saat ini kita tidak kirim data dari backend,
-        // tabel diisi oleh JavaScript dummy di Blade
-        return view('data-mahasiswa');
-    })->name('data-mahasiswa');
-
-    // ✅ Halaman Aktivitas Mahasiswa (frontend + dummy JS)
-    Route::get('/aktivitas', function () {
-        // sama seperti di atas, dummy di-handle di file Blade
-        return view('aktivitas');
-    })->name('aktivitas');
+    // MAHASISWA
+    Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])->name('mahasiswa.home');
+    Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])->name('mahasiswa.peminjaman.store');
 });
+
+// ========================
+// ROUTE PORTAL MAHASISWA
+// ========================
+    Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])
+        ->name('mahasiswa.home');
+
+    // Submit: mulai aktivitas / peminjaman → masuk ke activity_logs
+    Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])
+        ->name('mahasiswa.peminjaman.store');
 
 // Routes untuk profile
 Route::middleware('auth')->group(function () {
@@ -38,5 +42,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-

@@ -51,9 +51,20 @@
                                 <td class="px-3 py-2">{{ $m->program_study }}</td>
                                 <td class="px-3 py-2">{{ $m->faculty }}</td>
                                 <td class="px-3 py-2">{{ $m->year_entry}}</td>
-                                <td class="px-3 py-2 text-[11px] text-gray-400">
-                                    Detail / Edit / Hapus
-                                    <span class="italic">(belum aktif)</span>
+                                <td class="px-3 py-2 text-[11px] text-gray-400 space-x-1">
+                                    {{-- Tombol Hapus --}}
+                                    <form action="{{ route('data-mahasiswa.destroy', $m->student_id) }}"
+                                        method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus data mahasiswa ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="px-2 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -65,65 +76,3 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-<script>
-    // === DUMMY DATA STUDENTS ===
-    const dummyStudents = [
-        {
-            student_id: 101,
-            nim: "2141720001",
-            name: "Ahmad Fauzan",
-            program_study: "Teknik Informatika",
-            faculty: "FT",
-            year_entry: 2021
-        },
-        {
-            student_id: 102,
-            nim: "2141720002",
-            name: "Siti Rahmawati",
-            program_study: "Sistem Informasi",
-            faculty: "FT",
-            year_entry: 2020
-        },
-        {
-            student_id: 103,
-            nim: "2141720003",
-            name: "Budi Prasetyo",
-            program_study: "Manajemen",
-            faculty: "FEB",
-            year_entry: 2022
-        },
-        {
-            student_id: 104,
-            nim: "2141720004",
-            name: "Maya Kartika",
-            program_study: "Ilmu Komunikasi",
-            faculty: "FISIP",
-            year_entry: 2019
-        }
-    ];
-
-    // === MASUKKAN DATA KE TABEL SECARA DINAMIS ===
-    const tbody = document.querySelector("#student-body");
-
-    dummyStudents.forEach((mhs, index) => {
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-gray-50";
-
-        tr.innerHTML = `
-            <td class="px-3 py-2">${index + 1}</td>
-            <td class="px-3 py-2">${mhs.nim}</td>
-            <td class="px-3 py-2">${mhs.name}</td>
-            <td class="px-3 py-2">${mhs.program_study}</td>
-            <td class="px-3 py-2">${mhs.faculty}</td>
-            <td class="px-3 py-2">${mhs.year_entry}</td>
-            <td class="px-3 py-2 text-[11px] text-gray-400">
-                Detail / Edit / Hapus
-            </td>
-        `;
-
-        tbody.appendChild(tr);
-    });
-</script>
-@endsection
-

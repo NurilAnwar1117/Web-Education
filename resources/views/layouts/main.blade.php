@@ -55,12 +55,15 @@
                     {{ Route::is('aktivitas') ? 'bg-[#243447]' : '' }}">
                 <i class="fa fa-clock"></i> Aktivitas
             </a>
+
+            <!-- <a href="{{ route('peminjaman.index') }}"
+                class="flex items-center gap-3 p-3 hover:bg-[#243447] rounded-xl cursor-pointer">
+                <i class="fa fa-hand-holding-heart"></i>
+                Peminjaman Fasilitas
+            </a> -->
             
             <a class="flex items-center gap-3 p-3 hover:bg-[#243447] rounded-xl cursor-pointer">
                 <i class="fa fa-chart-line"></i> Laporan
-            </a>
-            <a class="flex items-center gap-3 p-3 hover:bg-[#243447] rounded-xl cursor-pointer">
-                <i class="fa fa-gear"></i> Pengaturan
             </a>
         </nav>
         
