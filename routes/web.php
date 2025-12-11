@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentDataController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
@@ -17,11 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
 
     // ✅ Halaman Data Mahasiswa (frontend + dummy JS)
-    Route::get('/data-mahasiswa', function () {
-        // saat ini kita tidak kirim data dari backend,
-        // tabel diisi oleh JavaScript dummy di Blade
-        return view('data-mahasiswa');
-    })->name('data-mahasiswa');
+    Route::get('/data-mahasiswa', [StudentDataController::class, 'index']
+    )->name('data-mahasiswa');
 
     // ✅ Halaman Aktivitas Mahasiswa (frontend + dummy JS)
     Route::get('/aktivitas', function () {
