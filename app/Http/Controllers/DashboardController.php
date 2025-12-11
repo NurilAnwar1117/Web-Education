@@ -18,7 +18,7 @@ class DashboardController extends Controller
                         ->get();
 
         // Statistik sederhana (opsional) untuk ditampilkan jika mau
-        $totalMahasiswa = \App\Models\Student::count();
+        $totalMahasiswa = Student::count();
         $aktifHariIni = ActivityLog::whereDate('timestamp_in', Carbon::today())->count();
         $tidakAktif = $totalMahasiswa - $aktifHariIni;
         $aktivitasMingguan = ActivityLog::where('timestamp_in', '>=', Carbon::now()->subDays(7))->count();
@@ -38,7 +38,7 @@ class DashboardController extends Controller
     // =======================
     public function mahasiswa(Request $request)
     {
-        $query = \App\Models\Student::query();
+        $query = Student::query();
 
         // Optional search
         if ($search = $request->q) {
@@ -66,8 +66,6 @@ class DashboardController extends Controller
             ->route('data-mahasiswa')
             ->with('success', 'Data mahasiswa dan semua catatan aktivitasnya berhasil dihapus.');
     }
-
-
     
     // =======================
     // AKTIVITAS MAHASISWA

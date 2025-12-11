@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentDataController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/peminjaman-fasilitas', [FacilityLoanController::class, 'index'])->name('peminjaman.index');
 
     // Dashboard (home)
-    Route::get('/dashboard', [DashboardController::class, 'index'])
+    Route::get('/dashboard', [AnalyticController::class, 'index'])
         ->name('dashboard');
 
     Route::get('/data-mahasiswa', [StudentDataController::class, 'index']
@@ -30,7 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/aktivitas', [ActivityLogController::class, 'index']
     )->name('aktivitas');
-    
+
+    Route::get('/laporan', [AnalyticController::class, 'index']
+    )->name('laporan');
+
     // MAHASISWA
     Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])->name('mahasiswa.home');
     Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])->name('mahasiswa.peminjaman.store');
