@@ -62,9 +62,9 @@
                 Peminjaman Fasilitas
             </a> -->
             
-            <a href="{{ route('laporan') }}"
+            <a href="{{ route('fasilitas.index') }}"
                 class="flex items-center gap-3 p-3 hover:bg-[#243447] 
-                    {{ Route::is('laporan') ? 'bg-[#243447]' : '' }}">
+                    {{ Route::is('fasilitas.index') ? 'bg-[#243447]' : '' }}">
                 <i class="fa fa-chart-line"></i> Laporan
             </a>
         </nav>

@@ -1,7 +1,9 @@
 @extends('layouts.main')
 @section('title','Analytics')
 @section('content')
-<div class="p-6">
+<div class="glass rounded-2xl p-6 shadow-2xl">
+    
+    <h1 class="text-2xl font-bold mb-4 text-white">Dashboard Monitoring Fasilitas</h1>
     <div class="grid grid-cols-4 gap-4 mb-6">
         <div class="bg-white p-4 rounded">Total Hari Ini<br><span class="text-2xl font-bold">{{ $totalToday }}</span></div>
         <div class="bg-white p-4 rounded">Aktivitas Minggu Ini<br><span class="text-2xl font-bold">{{ $activityWeek }}</span></div>
@@ -10,17 +12,17 @@
     </div>
 
     <div class="flex gap-2 mb-4">
-        <a href="{{ route('laporan', ['range' => 'week']) }}"
+        <a href="{{ route('dashboard', ['range' => 'week']) }}"
         class="px-4 py-2 rounded-lg {{ $range=='week'?'bg-blue-600 text-white':'bg-gray-200' }}">
         Mingguan
         </a>
 
-        <a href="{{ route('laporan', ['range' => 'month']) }}"
+        <a href="{{ route('dashboard', ['range' => 'month']) }}"
         class="px-4 py-2 rounded-lg {{ $range=='month'?'bg-blue-600 text-white':'bg-gray-200' }}">
         Bulanan
         </a>
 
-        <a href="{{ route('laporan', ['range' => 'year']) }}"
+        <a href="{{ route('dashboard', ['range' => 'year']) }}"
         class="px-4 py-2 rounded-lg {{ $range=='year'?'bg-blue-600 text-white':'bg-gray-200' }}">
         Tahunan
         </a>
