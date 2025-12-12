@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentDataController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacilityLoanController;
+use App\Http\Controllers\FacilityReportController;
 
 // Arahkan root "/" langsung ke halaman login
 Route::get('/', function () {
@@ -18,6 +22,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/aktivitas', [DashboardController::class, 'aktivitas'])->name('aktivitas');
     Route::delete('/aktivitas/{log}', [DashboardController::class, 'destroyActivity'])->name('aktivitas.destroy');
     Route::get('/peminjaman-fasilitas', [FacilityLoanController::class, 'index'])->name('peminjaman.index');
+
+    // Dashboard (home)
+    Route::get('/dashboard', [AnalyticController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('/data-mahasiswa', [StudentDataController::class, 'index']
+    )->name('data-mahasiswa');
+
+    Route::get('/aktivitas', [ActivityLogController::class, 'index']
+    )->name('aktivitas');
+
+    // Halaman daftar fasilitas
+    Route::get('/fasilitas', [FacilityReportController::class, 'index'])
+        ->name('fasilitas.index');
+
+    // Halaman laporan per fasilitas
+    Route::get('/fasilitas/{id}', [FacilityReportController::class, 'show'])
+        ->name('fasilitas.show');
 
     // MAHASISWA
     Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])->name('mahasiswa.home');

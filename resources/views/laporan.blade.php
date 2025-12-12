@@ -1,31 +1,10 @@
 @extends('layouts.main')
 @section('title','Analytics')
 @section('content')
-<div class="glass rounded-2xl p-6 shadow-2xl">
-    
-    <h1 class="text-2xl font-bold mb-4 text-white">Dashboard Monitoring Fasilitas</h1>
+<div class="p-6">
     <div class="grid grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded">Total Hari Ini<br><span class="text-2xl font-bold">{{ $totalToday }}</span></div>
-        <div class="bg-white p-4 rounded">Aktivitas Minggu Ini<br><span class="text-2xl font-bold">{{ $activityWeek }}</span></div>
-        <div class="bg-white p-4 rounded">Akitivats Bulan Ini<br><span class="text-2xl font-bold">{{ $activityMonth }}</span></div>
-        <div class="bg-white p-4 rounded">Akitivats Tahun Ini<br><span class="text-2xl font-bold">{{ $activityYear }}</span></div>
-    </div>
-
-    <div class="flex gap-2 mb-4">
-        <a href="{{ route('dashboard', ['range' => 'week']) }}"
-        class="px-4 py-2 rounded-lg {{ $range=='week'?'bg-blue-600 text-white':'bg-gray-200' }}">
-        Mingguan
-        </a>
-
-        <a href="{{ route('dashboard', ['range' => 'month']) }}"
-        class="px-4 py-2 rounded-lg {{ $range=='month'?'bg-blue-600 text-white':'bg-gray-200' }}">
-        Bulanan
-        </a>
-
-        <a href="{{ route('dashboard', ['range' => 'year']) }}"
-        class="px-4 py-2 rounded-lg {{ $range=='year'?'bg-blue-600 text-white':'bg-gray-200' }}">
-        Tahunan
-        </a>
+        <div class="bg-white p-4 rounded">—</div>
+        <div class="bg-white p-4 rounded">—</div>
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
@@ -44,10 +23,10 @@
             <canvas id="chartHours"></canvas>
         </div>
 
-        <!-- <div class="bg-white p-4 rounded">
+        <div class="bg-white p-4 rounded">
             <h3 class="font-semibold">Utilisasi (total menit / 30 hari)</h3>
             <canvas id="chartUtil"></canvas>
-        </div> -->
+        </div>
     </div>
 </div>
 @endsection
