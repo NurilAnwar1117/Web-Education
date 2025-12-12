@@ -8,55 +8,83 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacilityLoanController;
 use App\Http\Controllers\FacilityReportController;
+use App\Http\Controllers\StudentAuthController;
 
-// Arahkan root "/" langsung ke halaman login
+// ========================
+// ROOT: ARAHKAN KE LOGIN ADMIN
+// ========================
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('student.login');
 });
 
+// ========================
+// AREA ADMIN (HARUS LOGIN LARAVEL)
+// ========================
 Route::middleware(['auth', 'verified'])->group(function () {
-    // ADMIN
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/data-mahasiswa', [DashboardController::class, 'mahasiswa'])->name('data-mahasiswa');
-    Route::delete('/data-mahasiswa/{student}', [DashboardController::class, 'destroyStudent'])->name('data-mahasiswa.destroy');
-    Route::get('/aktivitas', [DashboardController::class, 'aktivitas'])->name('aktivitas');
-    Route::delete('/aktivitas/{log}', [DashboardController::class, 'destroyActivity'])->name('aktivitas.destroy');
-    Route::get('/peminjaman-fasilitas', [FacilityLoanController::class, 'index'])->name('peminjaman.index');
 
-    // Dashboard (home)
+    // DASHBOARD & ANALITIK
     Route::get('/dashboard', [AnalyticController::class, 'index'])
         ->name('dashboard');
 
-    Route::get('/data-mahasiswa', [StudentDataController::class, 'index']
-    )->name('data-mahasiswa');
+    // DATA MAHASISWA
+    Route::get('/data-mahasiswa', [StudentDataController::class, 'index'])
+        ->name('data-mahasiswa');
+    Route::delete('/data-mahasiswa/{student}', [DashboardController::class, 'destroyStudent'])
+        ->name('data-mahasiswa.destroy');
 
-    Route::get('/aktivitas', [ActivityLogController::class, 'index']
-    )->name('aktivitas');
+    // AKTIVITAS
+    Route::get('/aktivitas', [ActivityLogController::class, 'index'])
+        ->name('aktivitas');
+    Route::delete('/aktivitas/{log}', [DashboardController::class, 'destroyActivity'])
+        ->name('aktivitas.destroy');
 
-    // Halaman daftar fasilitas
+    // PEMINJAMAN FASILITAS (VIEW ADMIN)
+    Route::get('/peminjaman-fasilitas', [FacilityLoanController::class, 'index'])
+        ->name('peminjaman.index');
+
+    // LAPORAN FASILITAS
     Route::get('/fasilitas', [FacilityReportController::class, 'index'])
         ->name('fasilitas.index');
 
-    // Halaman laporan per fasilitas
     Route::get('/fasilitas/{id}', [FacilityReportController::class, 'show'])
         ->name('fasilitas.show');
-
-    // MAHASISWA
-    Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])->name('mahasiswa.home');
-    Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])->name('mahasiswa.peminjaman.store');
 });
 
 // ========================
-// ROUTE PORTAL MAHASISWA
+// AUTH MAHASISWA (REGISTER & LOGIN)
 // ========================
-    Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])
-        ->name('mahasiswa.home');
 
-    // Submit: mulai aktivitas / peminjaman → masuk ke activity_logs
-    Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])
-        ->name('mahasiswa.peminjaman.store');
+// FORM REGISTER MAHASISWA
+Route::get('/student/register', [StudentAuthController::class, 'showRegisterForm'])
+    ->name('student.register');
 
-// Routes untuk profile
+// PROSES REGISTER MAHASISWA
+Route::post('/student/register', [StudentAuthController::class, 'register'])
+    ->name('student.register.submit');
+
+// FORM LOGIN MAHASISWA
+Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])
+    ->name('student.login');
+
+// PROSES LOGIN MAHASISWA
+Route::post('/student/login', [StudentAuthController::class, 'login'])
+    ->name('student.login.submit');
+
+// ========================
+// PORTAL MAHASISWA (SETELAH LOGIN NIM+PASSWORD)
+// ========================
+
+// Halaman form peminjaman fasilitas (blade peminjaman-fasilitas milikmu)
+Route::get('/mahasiswa', [FacilityLoanController::class, 'create'])
+    ->name('mahasiswa.home');
+
+// Submit: mulai aktivitas / peminjaman → masuk ke activity_logs
+Route::post('/mahasiswa/peminjaman', [FacilityLoanController::class, 'store'])
+    ->name('mahasiswa.peminjaman.store');
+
+// ========================
+// PROFILE (ADMIN) – BAWAAN LARAVEL
+// ========================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
