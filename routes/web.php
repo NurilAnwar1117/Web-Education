@@ -50,6 +50,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('fasilitas.show');
 });
 
+    // Selesai aktivitas (mahasiswa)
+    Route::post('/mahasiswa/selesai', [FacilityLoanController::class, 'finish'])
+        ->name('mahasiswa.peminjaman.finish');
+
+    // Logout mahasiswa (session)
+    Route::post('/student/logout', [StudentAuthController::class, 'logout'])
+        ->name('student.logout');
+
 // ========================
 // AUTH MAHASISWA (REGISTER & LOGIN)
 // ========================

@@ -76,4 +76,14 @@ class StudentAuthController extends Controller
         // ARAHKAN KE MENU PEMINJAMAN FASILITAS
         return redirect()->route('mahasiswa.home');
     }
+
+    public function logout()
+    {
+        session()->forget(['student_id', 'student_nim', 'student_name']);
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('student.login')->with('status', 'Anda telah logout.');
+    }
+
 }

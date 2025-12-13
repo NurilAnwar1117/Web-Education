@@ -15,50 +15,81 @@ class FacilityLoanController extends Controller
     {
         $facilities = Facility::orderBy('facility_name')->get();
 
+        $activeLog = null;
+        if (session()->has('student_id')) {
+            $activeLog = ActivityLog::with('facility')
+                ->where('student_id', session('student_id'))
+                ->whereNull('timestamp_out')
+                ->latest('timestamp_in')
+                ->first();
+        }
+
         return view('mahasiswa.home', [
-            'facilities' => $facilities
+            'facilities' => $facilities,
+            'activeLog'  => $activeLog,
         ]);
     }
 
     // Mulai aktivitas / peminjaman → masuk ke activity_logs
     public function store(Request $request)
     {
-        $request->validate([
-            'facility_id'   => 'required|exists:facilities,facility_id',
-            'activity_type' => 'required|in:masuk,keluar,menggunakan,using',
-        ]);
-
-        // 1. Cari student berdasarkan NIM user yang login
-        //    -> pastikan users punya field 'nim' dan students juga punya 'nim'
-        $user = Auth::user();
-
-        $student = Student::where('nim', $user->nim ?? null)->first();
-
-        if (! $student) {
-            return back()->with('error', 'Data mahasiswa tidak ditemukan di tabel students. Hubungi admin.');
+        // Pastikan mahasiswa login (pakai session, bukan Auth)
+        if (!session()->has('student_id')) {
+            return redirect()->route('student.login')
+                ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $studentId = $student->student_id;
+        $request->validate([
+            'facility_id'   => 'required|exists:facilities,facility_id',
+            'activity_type' => 'required|string|max:255',
+        ]);
 
-        // 2. Cek apakah masih ada aktivitas aktif
+        $studentId = session('student_id');
+
+        // Cek aktivitas aktif
         $hasActive = ActivityLog::where('student_id', $studentId)
             ->whereNull('timestamp_out')
             ->exists();
 
         if ($hasActive) {
-            return back()->with('error', 'Selesaikan aktivitas sebelumnya terlebih dahulu sebelum memulai yang baru.');
+            return back()->with('error', 'Selesaikan aktivitas sebelumnya terlebih dahulu.');
         }
 
-        // 3. Buat log aktivitas baru
         ActivityLog::create([
             'student_id'    => $studentId,
             'facility_id'   => $request->facility_id,
-            'activity_type' => $request->activity_type ?? 'menggunakan',
+            'activity_type' => $request->activity_type, // TEKS MANUAL
             'timestamp_in'  => now(),
             'timestamp_out' => null,
-            'duration'      => null,
         ]);
 
-        return back()->with('success', 'Aktivitas fasilitas berhasil dicatat.');
+        return back()->with('success', 'Aktivitas berhasil dicatat.');
     }
+
+    public function finish(Request $request)
+    {
+        if (!session()->has('student_id')) {
+            return redirect()->route('student.login')
+                ->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $studentId = session('student_id');
+
+        $activeLog = ActivityLog::where('student_id', $studentId)
+            ->whereNull('timestamp_out')
+            ->latest('timestamp_in')
+            ->first();
+
+        if (! $activeLog) {
+            return back()->with('error', 'Tidak ada aktivitas yang sedang berjalan.');
+        }
+
+        $activeLog->update([
+            'timestamp_out' => now(),
+        ]);
+
+        return back()->with('success', 'Aktivitas berhasil diselesaikan.');
+    }
+
+
 }
