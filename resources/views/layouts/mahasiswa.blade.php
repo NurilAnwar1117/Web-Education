@@ -22,36 +22,37 @@
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
-    {{-- HEADER / TOP BAR UNTUK MAHASISWA --}}
-    <header class="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 mb-4 md:mb-6 flex items-center justify-between shadow-xl">
+    <div class="w-full">
+        {{-- HEADER / TOP BAR UNTUK MAHASISWA --}}
+        <header class="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 mb-4 md:mb-6 flex items-center justify-between shadow-xl">
 
-        {{-- KIRI --}}
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 flex items-center justify-center shadow">
-                <i class="fa fa-user-graduate text-blue-600 text-lg md:text-xl"></i>
+            {{-- KIRI --}}
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 flex items-center justify-center shadow">
+                    <i class="fa fa-user-graduate text-blue-600 text-lg md:text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base md:text-lg font-bold text-white">Portal Mahasiswa</h1>
+                    <p class="text-[11px] md:text-xs text-blue-100">peminjaman fasilitas kampus</p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-base md:text-lg font-bold text-white">Portal Mahasiswa</h1>
-                <p class="text-[11px] md:text-xs text-blue-100">peminjaman fasilitas kampus</p>
-            </div>
-        </div>
 
-        {{-- KANAN --}}
-        <form method="POST" action="{{ route('student.logout') }}">
-            @csrf
-            <button type="submit"
-                class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs md:text-sm hover:bg-red-700">
-                Logout
-            </button>
-        </form>
+            {{-- KANAN --}}
+            <form method="POST" action="{{ route('student.logout') }}">
+                @csrf
+                <button type="submit"
+                    class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs md:text-sm hover:bg-red-700">
+                    Logout
+                </button>
+            </form>
 
-    </header>
+        </header>
 
-    {{-- KONTEN UTAMA MAHASISWA --}}
-    <main class="px-4 md:px-8 lg:px-12 xl:px-20">
-        @yield('content')
-    </main>
-
+        {{-- KONTEN UTAMA MAHASISWA --}}
+        <main class="w-full">
+            @yield('content')
+        </main>
+    </div>
 
     @yield('scripts')
 </body>

@@ -35,31 +35,47 @@
         <x-auth-session-status class="mb-4 text-white" :status="session('status')" />
 
         <!-- FORM LOGIN -->
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login') }}" autocomplete="off">
             @csrf
+
+            {{-- DUMMY FIELD: jebakan autofill (jangan dihapus) --}}
+            <input type="text" name="fake_username" autocomplete="username" class="hidden" tabindex="-1">
+            <input type="password" name="fake_password" autocomplete="current-password" class="hidden" tabindex="-1">
 
             <!-- Email -->
             <div class="mb-5">
                 <label class="text-white text-sm font-medium">Email</label>
-                <input type="email" name="email" required autofocus
-                       placeholder="name@example.com"
-                       class="w-full mt-1 px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/70 focus:ring-2 focus:ring-blue-300 outline-none">
+                <input
+                    type="email"
+                    name="email"
+                    required
+                    autofocus
+                    value="{{ old('email') }}"
+                    placeholder="Masukan Email Admin"
+                    autocomplete="off"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    class="w-full mt-1 px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/70 focus:ring-2 focus:ring-blue-300 outline-none">
                 <x-input-error :messages="$errors->get('email')" class="mt-1 text-red-200" />
             </div>
 
             <!-- Password -->
             <div class="mb-5">
                 <label class="text-white text-sm font-medium">Password</label>
-                <input type="password" name="password" required
-                       placeholder="••••••••"
-                       class="w-full mt-1 px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/70 focus:ring-2 focus:ring-blue-300 outline-none">
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    placeholder="Kata Sandi Admin"
+                    autocomplete="new-password"
+                    class="w-full mt-1 px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/70 focus:ring-2 focus:ring-blue-300 outline-none">
                 <x-input-error :messages="$errors->get('password')" class="mt-1 text-red-200" />
             </div>
 
             <!-- Remember -->
             <div class="flex items-center mb-6">
                 <input type="checkbox" name="remember"
-                       class="rounded text-blue-600 bg-white/20 border-white/40 focus:ring-blue-300">
+                    class="rounded text-blue-600 bg-white/20 border-white/40 focus:ring-blue-300">
                 <span class="ml-2 text-white/90 text-sm">Ingat saya</span>
             </div>
 
@@ -71,17 +87,13 @@
 
             <!-- Lupa Password -->
             @if (Route::has('password.request'))
-            <p class="text-center mt-3">
-                <a href="{{ route('password.request') }}" class="text-white/80 hover:text-white underline text-sm">
-                    Lupa Password?
-                </a>
-            </p>
+                <p class="text-center mt-3">
+                    <a href="{{ route('password.request') }}" class="text-white/80 hover:text-white underline text-sm">
+                        Lupa Password?
+                    </a>
+                </p>
             @endif
         </form>
-
-        <!-- Register -->
-       
-
     </div>
 
 </body>
